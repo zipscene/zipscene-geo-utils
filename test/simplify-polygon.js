@@ -60,7 +60,7 @@ describe('Simplify Polygons', function() {
 		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ]);
 	});
 
-	it.only('should something', function() {
+	it('should unreasonably similfy msa polygon', function() {
 		let testPoly = {
 			type: 'Polygon',
 			coordinates: [ [
@@ -86,36 +86,10 @@ describe('Simplify Polygons', function() {
 		let newPoly = simplifyPolygon({
 			maxVertices: 4
 		}, testPoly);
-		console.log(JSON.stringify(newPoly, null, '  '));
-		process.exit();
-	});
-
-	it('should', function() {
-		let _ = require('lodash');
-		let path = require('path');
-		let dataPath = path.resolve('/Users/mreeder/Development/zipscene/ETL/zs-market-geoid-converter');
-
-		let lineReader = require('readline').createInterface({
-			input: require('fs').createReadStream(path.resolve(dataPath, 'data/convert/attributes_msa.json'))
-		});
-
-		return new Promise((resolve) => {
-			let polys = [];
-			lineReader.on('line', function(line) {
-				let obj = JSON.parse(line);
-				let poly = _.get(obj, 'insert.Market.polygon');
-				if (poly) polys.push(poly);
-			});
-
-			lineReader.on('close', function() {
-				let onePoly = polys[0];
-				console.log(JSON.stringify(onePoly, null, '\t'));
-				resolve();
-			});
-		})
-		.then(() => {
-			console.log('done');
-			process.exit();
-		});
+		expect(newPoly.coordinates).to.eql([ [
+			[ -89.785809, 43.641049 ],
+			[ -89.600719, 43.380006 ],
+			[ -90.193814, 43.164464 ],
+			[ -90.191964, 43.554996 ] ] ]);
 	});
 });
