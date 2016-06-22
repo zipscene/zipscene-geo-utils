@@ -16,9 +16,9 @@ describe('Simplify Polygons', function() {
 			] ]
 		};
 
-		let newPoly = simplifyPolygon({
+		let newPoly = simplifyPolygon(polygon, {
 			maxVertices: 4
-		}, polygon);
+		});
 		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ]);
 	});
 
@@ -34,9 +34,9 @@ describe('Simplify Polygons', function() {
 			] ] ]
 		};
 
-		let newPoly = simplifyPolygon({
+		let newPoly = simplifyPolygon(polygon, {
 			maxVertices: 4
-		}, polygon);
+		});
 		expect(newPoly.coordinates).to.eql([ [ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ] ]);
 	});
 
@@ -54,9 +54,9 @@ describe('Simplify Polygons', function() {
 			] ]
 		};
 
-		let newPoly = simplifyPolygon({
+		let newPoly = simplifyPolygon(polygon, {
 			maxError: 0.05
-		}, polygon);
+		});
 		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ]);
 	});
 
@@ -83,9 +83,9 @@ describe('Simplify Polygons', function() {
 			] ]
 		};
 
-		let newPoly = simplifyPolygon({
+		let newPoly = simplifyPolygon(testPoly, {
 			maxVertices: 4
-		}, testPoly);
+		});
 		expect(newPoly.coordinates).to.eql([ [
 			[ -89.785809, 43.641049 ],
 			[ -89.600719, 43.380006 ],

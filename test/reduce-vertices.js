@@ -14,9 +14,9 @@ describe('Reduce Vertices', function() {
 			] ]
 		};
 
-		let newPoly = reduceVertices({
+		let newPoly = reduceVertices(polygon.coordinates[0], {
 			maxVertices: 4
-		}, polygon.coordinates[0]);
+		});
 		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ]);
 	});
 
@@ -31,9 +31,9 @@ describe('Reduce Vertices', function() {
 			] ]
 		};
 
-		let newPoly = reduceVertices({
+		let newPoly = reduceVertices(polygon.coordinates[0], {
 			maxVertices: 3
-		}, polygon.coordinates[0]);
+		});
 		expect(newPoly).to.eql([ [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ]);
 	});
 });
