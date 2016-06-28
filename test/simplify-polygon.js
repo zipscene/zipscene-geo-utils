@@ -17,7 +17,8 @@ describe('Simplify Polygons', function() {
 		};
 
 		let newPoly = simplifyPolygon(polygon, {
-			maxVertices: 4
+			maxVertices: 4,
+			minVertices: 3
 		});
 		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ]);
 	});
@@ -55,9 +56,10 @@ describe('Simplify Polygons', function() {
 		};
 
 		let newPoly = simplifyPolygon(polygon, {
-			maxError: 0.05
+			maxError: 0.05,
+			minVertices: 3
 		});
-		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ]);
+		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 5, 12 ], [ 10, 10 ], [ 10, 0 ] ] ]);
 	});
 
 	it('should unreasonably similfy msa polygon', function() {
@@ -84,12 +86,55 @@ describe('Simplify Polygons', function() {
 		};
 
 		let newPoly = simplifyPolygon(testPoly, {
-			maxVertices: 4
+			minVertices: 4,
+			maxError: 0.9999 // force min vertices
 		});
 		expect(newPoly.coordinates).to.eql([ [
 			[ -89.785809, 43.641049 ],
 			[ -89.600719, 43.380006 ],
 			[ -90.193814, 43.164464 ],
 			[ -90.191964, 43.554996 ] ] ]);
+	});
+
+	it('should unreasonably similfy msa polygon', function() {
+		let testPoly = {
+			type: 'Polygon',
+			coordinates: [ [
+				[ -90.312404, 43.640988 ],
+				[ -89.785809, 43.641049 ],
+				[ -89.732238, 43.571826 ],
+				[ -89.599357, 43.558041 ],
+				[ -89.600719, 43.380006 ],
+				[ -89.677613, 43.361197 ],
+				[ -89.720463, 43.293084 ],
+				[ -89.716761, 43.27399 ],
+				[ -89.838135, 43.206057 ],
+				[ -90.000123, 43.194624 ],
+				[ -90.05866, 43.145291 ],
+				[ -90.193814, 43.164464 ],
+				[ -90.191938, 43.380083 ],
+				[ -90.191964, 43.554996 ],
+				[ -90.311069, 43.553991 ],
+				[ -90.312404, 43.640988 ]
+			] ]
+		};
+
+		let newPoly = simplifyPolygon(testPoly, {
+			maxVertices: 12,
+			minVertices: 5,
+			maxError: 0.05 // force max error break condition
+		});
+
+		expect(newPoly.coordinates).to.eql([ [
+			[ -89.785809, 43.641049 ],
+			[ -89.732238, 43.571826 ],
+			[ -89.599357, 43.558041 ],
+			[ -89.600719, 43.380006 ],
+			[ -89.838135, 43.206057 ],
+			[ -90.05866, 43.145291 ],
+			[ -90.193814, 43.164464 ],
+			[ -90.191964, 43.554996 ],
+			[ -90.311069, 43.553991 ],
+			[ -90.312404, 43.640988 ] ] ]);
 	});
 });
