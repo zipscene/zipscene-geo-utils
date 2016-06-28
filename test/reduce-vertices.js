@@ -14,7 +14,7 @@ describe('Reduce Vertices', function() {
 				[ 10, 0 ]
 			] ]
 		};
-		// will stop at 4 points since when maxVertices is hit, maxError will have not
+
 		let newPoly = reduceVertices(polygon.coordinates[0], {
 			maxError: 0.0,
 			minVertices: 3,
@@ -35,7 +35,7 @@ describe('Reduce Vertices', function() {
 				[ 10, 0 ]
 			] ]
 		};
-		// will stop at 4 points since when maxVertices is hit, maxError will have not
+
 		let newPoly = reduceVertices(polygon.coordinates[0], {
 			maxError: 0.9999999999999,
 			minVertices: 3,
@@ -56,7 +56,7 @@ describe('Reduce Vertices', function() {
 				[ 10, 0 ]
 			] ]
 		};
-		// will stop at 4 points since when maxVertices is hit, maxError will have not
+
 		let newPoly = reduceVertices(polygon.coordinates[0], {
 			maxError: 0.00000001,
 			minVertices: 3,
@@ -78,12 +78,34 @@ describe('Reduce Vertices', function() {
 				[ 10, 0 ]
 			] ]
 		};
-		// will stop at 4 points since when maxVertices is hit, maxError will have not
+
 		let newPoly = reduceVertices(polygon.coordinates[0], {
 			maxError: 0.01,
 			minVertices: 3,
 			maxVertices: 5
 		});
 		expect(newPoly).to.eql([ [ 0, 0 ], [ 0.5, 9 ], [ 0, 10 ], [ 11, 9 ], [ 10, 0 ] ]);
+	});
+
+	it('should correctly handle min and max discrepancy', function() {
+		let polygon = {
+			type: 'Polygon',
+			coordinates: [ [
+				[ 0, 0 ],
+				[ 0.5, 9 ],
+				[ 0, 10 ],
+				[ 9, 9 ],
+				[ 10, 10 ],
+				[ 11, 9 ],
+				[ 10, 0 ]
+			] ]
+		};
+
+		let newPoly = reduceVertices(polygon.coordinates[0], {
+			maxError: 0.01,
+			minVertices: 5,
+			maxVertices: 3
+		});
+		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 11, 9 ] ]);
 	});
 });
