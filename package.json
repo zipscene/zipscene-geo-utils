@@ -1,0 +1,42 @@
+{
+  "name": "zs-geo-utils",
+  "version": "0.0.1",
+  "description": "Geo Utils",
+  "main": "./dist/lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@git.zipscene.com:zsapilibs/zs-geo-utils.git"
+  },
+  "scripts": {
+    "lint": "node ./node_modules/.bin/eslint . || exit 0",
+    "docs": "node ./node_modules/.bin/yuidoc .",
+    "test": "npm run-script build && node ./node_modules/.bin/mocha ./dist/test -R spec",
+    "build": "rm -rf dist && ./node_modules/.bin/broccoli build dist; rm -rf tmp",
+    "prepublish": "npm run-script build && npm run-script docs"
+  },
+  "dependencies": {
+    "area-polygon": "^1.0.1",
+    "babel-runtime": "6.9.2",
+    "binary-search-tree": "^0.2.6",
+    "geojson-area": "^0.2.1",
+    "lodash": "^4.13.1",
+    "xerror": "^1.1.1"
+  },
+  "devDependencies": {
+    "broccoli": "^0.16.9",
+    "broccoli-babel-transpiler": "^5.5.0",
+    "broccoli-cli": "^1.0.0",
+    "broccoli-funnel": "^1.0.1",
+    "broccoli-merge-trees": "^1.1.1",
+    "broccoli-static-compiler": "^0.2.2",
+    "broccoli-wrap": "0.0.2",
+    "chai": "^3.5.0",
+    "eslint": "^2.13.0",
+    "mocha": "^2.5.3",
+    "source-map-support": "^0.4.0",
+    "yuidocjs": "^0.10.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.zipscene.com/"
+  }
+}

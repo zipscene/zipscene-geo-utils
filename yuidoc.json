@@ -1,0 +1,8 @@
+{
+	"name": "zs-geo-utils",
+	"description": "Geo Utils",
+	"options": {
+		"outdir": "./docs",
+		"exclude": "dist,tmp,test,node_modules"
+	}
+}
