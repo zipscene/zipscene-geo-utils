@@ -20,7 +20,7 @@ describe('Reduce Vertices', function() {
 			minVertices: 3,
 			maxVertices: 5
 		});
-		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 9, 9 ], [ 11, 9 ], [ 10, 0 ] ]);
+		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 9, 9 ], [ 11, 9 ], [ 10, 0 ], [ 0, 0 ] ]);
 	});
 
 	it('should reduce polygon to MIN vertices given an error tolerance of 99.9999%', function() {
@@ -41,7 +41,7 @@ describe('Reduce Vertices', function() {
 			minVertices: 3,
 			maxVertices: 5
 		});
-		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 11, 9 ] ]);
+		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 11, 9 ], [ 0, 0 ] ]);
 	});
 
 	it('should reduce polygon to MAX vertices given an error tolerance of 0.000001%', function() {
@@ -62,7 +62,7 @@ describe('Reduce Vertices', function() {
 			minVertices: 3,
 			maxVertices: 5
 		});
-		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 9, 9 ], [ 11, 9 ], [ 10, 0 ] ]);
+		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 9, 9 ], [ 11, 9 ], [ 10, 0 ], [ 0, 0 ] ]);
 	});
 
 	it('should reduce polygon to error threshold and add previously removed point', function() {
@@ -84,7 +84,7 @@ describe('Reduce Vertices', function() {
 			minVertices: 3,
 			maxVertices: 5
 		});
-		expect(newPoly).to.eql([ [ 0, 0 ], [ 0.5, 9 ], [ 0, 10 ], [ 11, 9 ], [ 10, 0 ] ]);
+		expect(newPoly).to.eql([ [ 0, 0 ], [ 0.5, 9 ], [ 0, 10 ], [ 11, 9 ], [ 10, 0 ], [ 0, 0 ] ]);
 	});
 
 	it('should correctly handle min and max discrepancy', function() {
@@ -106,6 +106,6 @@ describe('Reduce Vertices', function() {
 			minVertices: 5,
 			maxVertices: 3
 		});
-		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 11, 9 ] ]);
+		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 11, 9 ], [ 0, 0 ] ]);
 	});
 });
