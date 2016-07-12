@@ -20,7 +20,8 @@
     "binary-search-tree": "^0.2.6",
     "geojson-area": "^0.2.1",
     "lodash": "^4.13.1",
-    "xerror": "^1.1.1"
+    "xerror": "^1.1.1",
+    "zs-objtools": "^1.6.2"
   },
   "devDependencies": {
     "broccoli": "^0.16.9",

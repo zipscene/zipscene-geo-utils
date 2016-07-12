@@ -20,7 +20,7 @@ describe('Simplify Polygons', function() {
 			maxVertices: 4,
 			minVertices: 3
 		});
-		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ]);
+		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ], [ 0, 0 ] ] ]);
 	});
 
 	it('should reduce multi polygon object\'s total vertices', function() {
@@ -38,7 +38,7 @@ describe('Simplify Polygons', function() {
 		let newPoly = simplifyPolygon(polygon, {
 			maxVertices: 4
 		});
-		expect(newPoly.coordinates).to.eql([ [ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ] ] ] ]);
+		expect(newPoly.coordinates).to.eql([ [ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ], [ 0, 0 ] ] ] ]);
 	});
 
 	it('should reduce polygon using maxError', function() {
@@ -59,7 +59,7 @@ describe('Simplify Polygons', function() {
 			maxError: 0.05,
 			minVertices: 3
 		});
-		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 5, 12 ], [ 10, 10 ], [ 10, 0 ] ] ]);
+		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 5, 12 ], [ 10, 10 ], [ 10, 0 ], [ 0, 0 ] ] ]);
 	});
 
 	it('should unreasonably similfy msa polygon', function() {
@@ -93,7 +93,8 @@ describe('Simplify Polygons', function() {
 			[ -89.785809, 43.641049 ],
 			[ -89.600719, 43.380006 ],
 			[ -90.193814, 43.164464 ],
-			[ -90.191964, 43.554996 ] ] ]);
+			[ -90.191964, 43.554996 ],
+			[ -89.785809, 43.641049 ] ] ]);
 	});
 
 	it('should unreasonably similfy msa polygon', function() {
@@ -135,6 +136,7 @@ describe('Simplify Polygons', function() {
 			[ -90.193814, 43.164464 ],
 			[ -90.191964, 43.554996 ],
 			[ -90.311069, 43.553991 ],
-			[ -90.312404, 43.640988 ] ] ]);
+			[ -90.312404, 43.640988 ],
+			[ -89.785809, 43.641049 ] ] ]);
 	});
 });
