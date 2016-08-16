@@ -1,0 +1,46 @@
+const { expect } = require('chai');
+const { Vertex } = require('../lib');
+
+describe('Vertex', function() {
+	describe('constructor', function() {
+		it('initializes vertex', function() {
+			let point = [ 0, 1 ];
+			let index = 0;
+
+			let vertex = new Vertex(point, index);
+
+			expect(vertex.point).to.equal(point);
+			expect(vertex.index).to.equal(index);
+			expect(vertex.prev).to.be.null;
+			expect(vertex.next).to.be.null;
+		});
+	});
+
+	describe('#getArea()', function() {
+		let vertex;
+
+		beforeEach(function() {
+			vertex = new Vertex([ 0, 0 ]);
+			vertex.prev = new Vertex([ 0, 1 ]);
+			vertex.next = new Vertex([ 2, 0 ]);
+		});
+
+		it('returns area of triangle formed by ajacent vertices', function() {
+			expect(vertex.getArea()).to.equal(1);
+		});
+
+		it('returns correct area after change to prev', function() {
+			vertex.getArea();
+			vertex.prev = new Vertex([ 0, 2 ]);
+
+			expect(vertex.getArea()).to.equal(2);
+		});
+
+		it('returns correct area after change to next', function() {
+			vertex.getArea();
+			vertex.next = new Vertex([ 1, 0 ]);
+
+			expect(vertex.getArea()).to.equal(0.5);
+		});
+	});
+});
