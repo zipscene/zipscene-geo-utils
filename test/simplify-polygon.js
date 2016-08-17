@@ -8,7 +8,7 @@ describe('Simplify Polygons', function() {
 			coordinates: [ [
 				[ 0, 0 ],
 				[ 0, 10 ],
-				[ 8.9, 8.9 ],
+				[ 8.8, 8.9 ],
 				[ 9, 9 ],
 				[ 9.9, 9.9 ],
 				[ 10, 10 ],
@@ -62,7 +62,7 @@ describe('Simplify Polygons', function() {
 		expect(newPoly.coordinates).to.eql([ [ [ 0, 0 ], [ 0, 10 ], [ 5, 12 ], [ 10, 10 ], [ 10, 0 ], [ 0, 0 ] ] ]);
 	});
 
-	it('should unreasonably similfy msa polygon', function() {
+	it('should simplify msa polygon to minVertices', function() {
 		let testPoly = {
 			type: 'Polygon',
 			coordinates: [ [
@@ -97,7 +97,7 @@ describe('Simplify Polygons', function() {
 			[ -89.785809, 43.641049 ] ] ]);
 	});
 
-	it('should unreasonably similfy msa polygon', function() {
+	it('should simplify msa polygon to maxError', function() {
 		let testPoly = {
 			type: 'Polygon',
 			coordinates: [ [
@@ -127,6 +127,7 @@ describe('Simplify Polygons', function() {
 		});
 
 		expect(newPoly.coordinates).to.eql([ [
+			[ -90.312404, 43.640988 ],
 			[ -89.785809, 43.641049 ],
 			[ -89.732238, 43.571826 ],
 			[ -89.599357, 43.558041 ],
@@ -136,7 +137,6 @@ describe('Simplify Polygons', function() {
 			[ -90.193814, 43.164464 ],
 			[ -90.191964, 43.554996 ],
 			[ -90.311069, 43.553991 ],
-			[ -90.312404, 43.640988 ],
-			[ -89.785809, 43.641049 ] ] ]);
+			[ -90.312404, 43.640988 ] ] ]);
 	});
 });
