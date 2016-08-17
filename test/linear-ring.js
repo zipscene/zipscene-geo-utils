@@ -88,8 +88,28 @@ describe('LinearRing', function() {
 			let prev = ring.vertices[3];
 			let next = ring.vertices[1];
 			let handler = sinon.spy((changed) => {
-				if (changed === prev) expect(changed.next).to.equal(next);
-				if (changed === next) expect(changed.prev).to.equal(prev);
+				// The order of updates does not matter, but the event for the
+				// first must be emitted *before* the second vertex is changed.
+
+				if (changed === prev) {
+					// Ensure prev.next was updated before call.
+					expect(prev.next).to.equal(next);
+
+					if (handler.callCount === 1) {
+						// Ensure next.prev has not yet been updated.
+						expect(next.prev).to.equal(vertex);
+					}
+				}
+
+				if (changed === next) {
+					// Ensure next.prev was updated before call.
+					expect(next.prev).to.equal(prev);
+
+					if (handler.callCount === 1) {
+						// Ensure prev.next has not yet been updated.
+						expect(prev.next).to.equal(vertex);
+					}
+				}
 			});
 			ring.on('vertexChanged', handler);
 
@@ -150,8 +170,28 @@ describe('LinearRing', function() {
 				let prev = ring.vertices[1];
 				let next = ring.vertices[4];
 				let handler = sinon.spy((changed) => {
-					if (changed === prev) expect(changed.next).to.equal(vertex);
-					if (changed === next) expect(changed.prev).to.equal(vertex);
+					// The order of updates does not matter, but the event for the
+					// first must be emitted *before* the second vertex is changed.
+
+					if (changed === prev) {
+						// Ensure prev.next was updated before call.
+						expect(prev.next).to.equal(vertex);
+
+						if (handler.callCount === 1) {
+							// Ensure next.prev has not yet been updated.
+							expect(next.prev).to.equal(prev);
+						}
+					}
+
+					if (changed === next) {
+						// Ensure next.prev was updated before call.
+						expect(next.prev).to.equal(vertex);
+
+						if (handler.callCount === 1) {
+							// Ensure prev.next has not yet been updated.
+							expect(prev.next).to.equal(next);
+						}
+					}
 				});
 				ring.on('vertexChanged', handler);
 
