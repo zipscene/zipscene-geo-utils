@@ -254,4 +254,32 @@ describe('LinearRing', function() {
 			]);
 		});
 	});
+
+	describe('#hasIntersections()', function() {
+		context('ring has no intersections with itself', function() {
+			it('returns false', function() {
+				let ring = new LinearRing([
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 4, 4 ],
+					[ 4, 0 ]
+				]);
+
+				expect(ring.hasIntersections()).to.be.false;
+			});
+		});
+
+		context('ring has an intersection with itself', function() {
+			it('returns true', function() {
+				let ring = new LinearRing([
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 4, 0 ],
+					[ 4, 4 ]
+				]);
+
+				expect(ring.hasIntersections()).to.be.true;
+			});
+		});
+	});
 });

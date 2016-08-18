@@ -21,6 +21,7 @@
     "geojson-area": "^0.2.1",
     "heap": "^0.2.6",
     "lodash": "^4.13.1",
+    "sweepline2": "^0.2.1",
     "xerror": "^1.1.1",
     "zs-objtools": "^1.6.2"
   },
