@@ -13,6 +13,7 @@ describe('Vertex', function() {
 			expect(vertex.index).to.equal(index);
 			expect(vertex.prev).to.be.null;
 			expect(vertex.next).to.be.null;
+			expect(vertex.skipped).to.be.false;
 		});
 	});
 
