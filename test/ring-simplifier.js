@@ -27,12 +27,12 @@ describe('RingSimplifier', function() {
 			simplifier = new RingSimplifier(points);
 		});
 
-		it('creates a LinearRing from provided points', function() {
-			expect(simplifier.ring).to.be.an.instanceof(LinearRing);
-			expect(simplifier.ring.toArray()).to.deep.equal(points);
+		it('extends LinearRing', function() {
+			expect(simplifier).to.be.an.instanceof(LinearRing);
+			expect(simplifier.toArray()).to.deep.equal(points);
 		});
 
-		it('pushes ring vertices onto an area-based heap', function() {
+		it('pushes vertices onto an area-based heap', function() {
 			expect(simplifier.areaHeap).to.be.an.instanceof(Heap);
 
 			let vertices = [];
@@ -41,18 +41,18 @@ describe('RingSimplifier', function() {
 			}
 
 			expect(vertices).to.deep.equal([
-				simplifier.ring.vertices[0],
-				simplifier.ring.vertices[3],
-				simplifier.ring.vertices[1],
-				simplifier.ring.vertices[2]
+				simplifier.vertices[0],
+				simplifier.vertices[3],
+				simplifier.vertices[1],
+				simplifier.vertices[2]
 			]);
 		});
 
 		it('sets up event handler to keep heap positions of vertices up to date', function() {
-			let changedVertex = simplifier.ring.vertices[1];
+			let changedVertex = simplifier.vertices[1];
 			let updateItem = sandbox.spy(simplifier.areaHeap, 'updateItem');
 
-			simplifier.ring.emit('vertexChanged', changedVertex);
+			simplifier.emit('vertexChanged', changedVertex);
 
 			expect(updateItem).to.be.calledOnce;
 			expect(updateItem).to.be.calledOn(simplifier.areaHeap);
@@ -61,10 +61,10 @@ describe('RingSimplifier', function() {
 
 		it('does not attempt to update skipped vertices', function() {
 			simplifier.skip();
-			let skippedVertex = simplifier.ring.vertices[0];
+			let skippedVertex = simplifier.vertices[0];
 			let updateItem = sandbox.spy(simplifier.areaHeap, 'updateItem');
 
-			simplifier.ring.emit('vertexChanged', skippedVertex);
+			simplifier.emit('vertexChanged', skippedVertex);
 
 			expect(updateItem).to.not.be.called;
 		});
@@ -75,7 +75,7 @@ describe('RingSimplifier', function() {
 	});
 
 	describe('#simplify()', function() {
-		let simplifier, ring, areaHeap, removedVertices;
+		let simplifier, areaHeap, removedVertices;
 
 		beforeEach(function() {
 			simplifier = new RingSimplifier([
@@ -85,9 +85,9 @@ describe('RingSimplifier', function() {
 				[ 2, 0 ]  // Area: 3
 			]);
 
-			({ ring, areaHeap, removedVertices } = simplifier);
+			({ areaHeap, removedVertices } = simplifier);
 			sandbox.spy(areaHeap, 'pop');
-			sandbox.spy(ring, 'removeVertex');
+			sandbox.spy(simplifier, 'removeVertex');
 			sandbox.spy(removedVertices, 'push');
 
 			simplifier.simplify();
@@ -99,9 +99,9 @@ describe('RingSimplifier', function() {
 		});
 
 		it('removes smallest-area vertex from the ring', function() {
-			expect(ring.removeVertex).to.be.calledOnce;
-			expect(ring.removeVertex).to.be.calledOn(ring);
-			expect(ring.removeVertex).to.be.calledWith(areaHeap.pop.firstCall.returnValue);
+			expect(simplifier.removeVertex).to.be.calledOnce;
+			expect(simplifier.removeVertex).to.be.calledOn(simplifier);
+			expect(simplifier.removeVertex).to.be.calledWith(areaHeap.pop.firstCall.returnValue);
 		});
 
 		it('pushes smallest-area onto the array of removed vertices', function() {
@@ -120,7 +120,7 @@ describe('RingSimplifier', function() {
 	});
 
 	describe('#unsimplify()', function() {
-		let simplifier, ring, areaHeap, removedVertices;
+		let simplifier, areaHeap, removedVertices;
 
 		beforeEach(function() {
 			simplifier = new RingSimplifier([
@@ -131,9 +131,9 @@ describe('RingSimplifier', function() {
 			]);
 			simplifier.simplify();
 
-			({ ring, areaHeap, removedVertices } = simplifier);
+			({ areaHeap, removedVertices } = simplifier);
 			sandbox.spy(removedVertices, 'pop');
-			sandbox.spy(ring, 'restoreVertex');
+			sandbox.spy(simplifier, 'restoreVertex');
 			sandbox.spy(areaHeap, 'push');
 
 			simplifier.unsimplify();
@@ -145,9 +145,9 @@ describe('RingSimplifier', function() {
 		});
 
 		it('restores last-removed vertex to ring', function() {
-			expect(ring.restoreVertex).to.be.calledOnce;
-			expect(ring.restoreVertex).to.be.calledOn(ring);
-			expect(ring.restoreVertex).to.be.calledWith(removedVertices.pop.firstCall.returnValue);
+			expect(simplifier.restoreVertex).to.be.calledOnce;
+			expect(simplifier.restoreVertex).to.be.calledOn(simplifier);
+			expect(simplifier.restoreVertex).to.be.calledWith(removedVertices.pop.firstCall.returnValue);
 		});
 
 		it('pushes last-removed vertex back onto the area heap', function() {
