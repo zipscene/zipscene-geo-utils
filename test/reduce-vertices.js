@@ -108,4 +108,33 @@ describe('Reduce Vertices', function() {
 		});
 		expect(newPoly).to.eql([ [ 0, 0 ], [ 0, 10 ], [ 11, 9 ], [ 0, 0 ] ]);
 	});
+
+	it('should skip vertices to avoid self-crossing polygons', function() {
+		let points = [
+			[ 0, 0 ],
+			[ 0, 7 ],
+			[ 3, 6 ],
+			[ 4, 8 ],
+			[ 5, 6 ],
+			[ 8, 6 ],
+			[ 8, 0 ],
+			[ 4, 7 ]
+		];
+
+		let newPoints = reduceVertices(points, {
+			maxError: 0.0,
+			minVertices: 3,
+			maxVertices: 6
+		});
+
+		expect(newPoints).to.deep.equal([
+			[ 0, 0 ],
+			[ 0, 7 ],
+			[ 4, 8 ],
+			[ 8, 6 ],
+			[ 8, 0 ],
+			[ 4, 7 ],
+			[ 0, 0 ]
+		]);
+	});
 });
