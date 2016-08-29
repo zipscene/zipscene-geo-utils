@@ -36,7 +36,8 @@ describe('Simplify Polygons', function() {
 		};
 
 		let newPoly = simplifyPolygon(polygon, {
-			maxVertices: 4
+			maxVertices: 4,
+			minVertices: 3
 		});
 		expect(newPoly.coordinates).to.eql([ [ [ [ 0, 0 ], [ 0, 10 ], [ 10, 10 ], [ 10, 0 ], [ 0, 0 ] ] ] ]);
 	});
