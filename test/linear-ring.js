@@ -255,6 +255,37 @@ describe('LinearRing', function() {
 		});
 	});
 
+	describe('#toLineSegments()', function() {
+		let ring;
+
+		beforeEach(function() {
+			ring = new LinearRing([
+				[ 0, 0 ],
+				[ 0, 4 ],
+				[ 4, 4 ],
+				[ 4, 0 ]
+			]);
+		});
+
+		it('returns array of start and end points for all line segments', function() {
+			expect(ring.toLineSegments()).to.deep.equal([
+				[ [ 0, 0 ], [ 0, 4 ] ],
+				[ [ 0, 4 ], [ 4, 4 ] ],
+				[ [ 4, 4 ], [ 4, 0 ] ],
+				[ [ 4, 0 ], [ 0, 0 ] ]
+			]);
+		});
+
+		it('filters out removed vertices', function() {
+			ring.removeVertex(ring.vertices[0]);
+			expect(ring.toLineSegments()).to.deep.equal([
+				[ [ 0, 4 ], [ 4, 4 ] ],
+				[ [ 4, 4 ], [ 4, 0 ] ],
+				[ [ 4, 0 ], [ 0, 4 ] ]
+			]);
+		});
+	});
+
 	describe('#hasIntersections()', function() {
 		context('ring has no intersections with itself', function() {
 			it('returns false', function() {
