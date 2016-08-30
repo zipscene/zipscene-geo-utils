@@ -22,14 +22,15 @@ describe('RingSimplifier', function() {
 				[ 0, 0 ], // Area: 2
 				[ 0, 2 ], // Area: 5
 				[ 5, 3 ], // Area: 6
-				[ 2, 0 ]  // Area: 3
+				[ 2, 0 ], // Area: 3
+				[ 0, 0 ]  // endpoint
 			];
 			simplifier = new RingSimplifier(points);
 		});
 
 		it('extends LinearRing', function() {
 			expect(simplifier).to.be.an.instanceof(LinearRing);
-			expect(simplifier.toArray()).to.deep.equal(points);
+			expect(simplifier.toGeoJson()).to.deep.equal(points);
 		});
 
 		it('pushes vertices onto an area-based heap', function() {
@@ -265,7 +266,7 @@ describe('RingSimplifier', function() {
 
 			simplifier.rewind();
 
-			expect(simplifier.toArray()).to.deep.equal([
+			expect(simplifier.toGeoJson()).to.deep.equal([
 				[ 0, 0 ],
 				[ 0, 7 ],
 				[ 3, 6 ],
@@ -275,7 +276,8 @@ describe('RingSimplifier', function() {
 				[ 8, 0 ],
 				[ 6, 2 ],
 				[ 4, 7 ],
-				[ 2, 1 ]
+				[ 2, 1 ],
+				[ 0, 0 ]
 			]);
 			expect(simplifier.removedVertices).to.deep.equal([]);
 		});

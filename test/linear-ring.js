@@ -4,28 +4,38 @@ const XError = require('xerror');
 
 describe('LinearRing', function() {
 	describe('constructor', function() {
-		let points, ring;
+		it('calculates and stores original area', function() {
+			let ring = new LinearRing([
+				[ 0, 0 ],
+				[ 0, 4 ],
+				[ 4, 4 ],
+				[ 4, 0 ]
+			]);
 
-		beforeEach(function() {
-			points = [
+			expect(ring.originalArea).to.equal(16);
+		});
+
+		it('sets initial vertex count and area changed', function() {
+			let ring = new LinearRing([
+				[ 0, 0 ],
+				[ 0, 4 ],
+				[ 4, 4 ],
+				[ 4, 0 ]
+			]);
+
+			expect(ring.vertexCount).to.equal(4);
+			expect(ring.areaChanged).to.equal(0);
+		});
+
+		it('maps points to vertices', function() {
+			let points = [
 				[ 0, 0 ],
 				[ 0, 4 ],
 				[ 4, 4 ],
 				[ 4, 0 ]
 			];
-			ring = new LinearRing(points);
-		});
+			let ring = new LinearRing(points);
 
-		it('calculates and stores original area', function() {
-			expect(ring.originalArea).to.equal(16);
-		});
-
-		it('sets initial vertex count and area changed', function() {
-			expect(ring.vertexCount).to.equal(points.length);
-			expect(ring.areaChanged).to.equal(0);
-		});
-
-		it('maps points to vertices', function() {
 			expect(ring.vertices).to.be.an.instanceof(Array);
 			expect(ring.vertices).to.have.length(points.length);
 			ring.vertices.forEach((vertex, index) => {
@@ -36,6 +46,13 @@ describe('LinearRing', function() {
 		});
 
 		it('sets prev and next of each vertex', function() {
+			let ring = new LinearRing([
+				[ 0, 0 ],
+				[ 0, 4 ],
+				[ 4, 4 ],
+				[ 4, 0 ]
+			]);
+
 			expect(ring.vertices[0].next).to.equal(ring.vertices[1]);
 			expect(ring.vertices[0].prev).to.equal(ring.vertices[3]);
 
@@ -47,6 +64,18 @@ describe('LinearRing', function() {
 
 			expect(ring.vertices[3].next).to.equal(ring.vertices[0]);
 			expect(ring.vertices[3].prev).to.equal(ring.vertices[2]);
+		});
+
+		it('automatically removes endpoint if it is the same as start', function() {
+			let ring = new LinearRing([
+				[ 0, 0 ],
+				[ 0, 4 ],
+				[ 4, 4 ],
+				[ 4, 0 ],
+				[ 0, 0 ]
+			]);
+
+			expect(ring.vertices).to.have.length(4);
 		});
 	});
 
@@ -224,7 +253,7 @@ describe('LinearRing', function() {
 		});
 	});
 
-	describe('#toArray()', function() {
+	describe('#toGeoJson()', function() {
 		let ring;
 
 		beforeEach(function() {
@@ -236,21 +265,23 @@ describe('LinearRing', function() {
 			]);
 		});
 
-		it('returns vertices as an array of points', function() {
-			expect(ring.toArray()).to.deep.equal([
+		it('returns vertices as a valid GeoJson coordinates array', function() {
+			expect(ring.toGeoJson()).to.deep.equal([
 				[ 0, 0 ],
 				[ 0, 4 ],
 				[ 4, 4 ],
-				[ 4, 0 ]
+				[ 4, 0 ],
+				[ 0, 0 ]
 			]);
 		});
 
 		it('filters out removed vertices', function() {
 			ring.removeVertex(ring.vertices[0]);
-			expect(ring.toArray()).to.deep.equal([
+			expect(ring.toGeoJson()).to.deep.equal([
 				[ 0, 4 ],
 				[ 4, 4 ],
-				[ 4, 0 ]
+				[ 4, 0 ],
+				[ 0, 4 ]
 			]);
 		});
 	});
