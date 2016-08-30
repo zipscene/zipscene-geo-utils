@@ -55,7 +55,7 @@ describe('utils', function() {
 
 	describe('.linkEndpoints()', function() {
 		context('first and last points are not the same point', function() {
-			it('copies first point to the end of the array', function() {
+			it('returns clone of array with first point copied to end', function() {
 				let points = [
 					[ 0, 0 ],
 					[ 0, 4 ],
@@ -63,20 +63,26 @@ describe('utils', function() {
 					[ 4, 0 ]
 				];
 
-				utils.linkEndpoints(points);
+				let result = utils.linkEndpoints(points);
 
-				expect(points).to.deep.equal([
+				expect(result).to.deep.equal([
 					[ 0, 0 ],
 					[ 0, 4 ],
 					[ 4, 4 ],
 					[ 4, 0 ],
 					[ 0, 0 ]
 				]);
+				expect(points).to.deep.equal([
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 4, 4 ],
+					[ 4, 0 ]
+				]);
 			});
 		});
 
 		context('first and last points are already the same point', function() {
-			it('does not change array', function() {
+			it('returns unchanged array', function() {
 				let points = [
 					[ 0, 0 ],
 					[ 0, 4 ],
@@ -85,8 +91,9 @@ describe('utils', function() {
 					[ 0, 0 ]
 				];
 
-				utils.linkEndpoints(points);
+				let result = utils.linkEndpoints(points);
 
+				expect(result).to.equal(points);
 				expect(points).to.deep.equal([
 					[ 0, 0 ],
 					[ 0, 4 ],
@@ -98,11 +105,12 @@ describe('utils', function() {
 		});
 
 		context('array is empty', function() {
-			it('does nothing', function() {
+			it('returns unchanged array', function() {
 				let points = [];
 
-				utils.linkEndpoints(points);
+				let result = utils.linkEndpoints(points);
 
+				expect(result).to.equal(points);
 				expect(points).to.deep.equal([]);
 			});
 		});
@@ -110,7 +118,7 @@ describe('utils', function() {
 
 	describe('.unlinkEndpoints()', function() {
 		context('first and last points are the same point', function() {
-			it('removes last point from array', function() {
+			it('returns clone of array with last point removed', function() {
 				let points = [
 					[ 0, 0 ],
 					[ 0, 4 ],
@@ -119,19 +127,26 @@ describe('utils', function() {
 					[ 0, 0 ]
 				];
 
-				utils.unlinkEndpoints(points);
+				let result = utils.unlinkEndpoints(points);
 
-				expect(points).to.deep.equal([
+				expect(result).to.deep.equal([
 					[ 0, 0 ],
 					[ 0, 4 ],
 					[ 4, 4 ],
 					[ 4, 0 ]
 				]);
+				expect(points).to.deep.equal([
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 4, 4 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]);
 			});
 		});
 
 		context('first and last points are not the same point', function() {
-			it('does not change array', function() {
+			it('returns unchanged array', function() {
 				let points = [
 					[ 0, 0 ],
 					[ 0, 4 ],
@@ -139,8 +154,9 @@ describe('utils', function() {
 					[ 4, 0 ]
 				];
 
-				utils.unlinkEndpoints(points);
+				let result = utils.unlinkEndpoints(points);
 
+				expect(result).to.equal(points);
 				expect(points).to.deep.equal([
 					[ 0, 0 ],
 					[ 0, 4 ],
@@ -151,11 +167,12 @@ describe('utils', function() {
 		});
 
 		context('array is empty', function() {
-			it('does nothing', function() {
+			it('returns unchanged array', function() {
 				let points = [];
 
-				utils.unlinkEndpoints(points);
+				let result = utils.unlinkEndpoints(points);
 
+				expect(result).to.equal(points);
 				expect(points).to.deep.equal([]);
 			});
 		});
