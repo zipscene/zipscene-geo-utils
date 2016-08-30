@@ -119,7 +119,7 @@ describe('RingSimplifier', function() {
 		});
 	});
 
-	describe('#unsimplify()', function() {
+	describe('#undo()', function() {
 		let simplifier, areaHeap, removedVertices;
 
 		beforeEach(function() {
@@ -136,7 +136,7 @@ describe('RingSimplifier', function() {
 			sandbox.spy(simplifier, 'restoreVertex');
 			sandbox.spy(areaHeap, 'push');
 
-			simplifier.unsimplify();
+			simplifier.undo();
 		});
 
 		it('pops last-removed vertex from array of removed vertices', function() {
@@ -159,7 +159,7 @@ describe('RingSimplifier', function() {
 		context('removed vertices array is empty', function() {
 			it('throws XError with appropriate message', function() {
 				expect(() => {
-					simplifier.unsimplify();
+					simplifier.undo();
 				}).to.throw(XError, 'Removed vertex history is empty.');
 			});
 		});
@@ -205,6 +205,102 @@ describe('RingSimplifier', function() {
 			simplifier.clearHistory();
 
 			expect(simplifier.removedVertices).to.deep.equal([]);
+		});
+	});
+
+	describe('#willIntersect()', function() {
+		context('next simplify call will not cause an intersection', function() {
+			it('returns false', function() {
+				let simplifier = new RingSimplifier([
+					[ 0, 0 ],
+					[ 0, 7 ],
+					[ 3, 6 ],
+					[ 4, 8 ],
+					[ 5, 6 ],
+					[ 8, 6 ],
+					[ 8, 0 ],
+					[ 4, 5 ]
+				]);
+
+				expect(simplifier.willIntersect()).to.be.false;
+			});
+		});
+
+		context('next simplfy call will cause an intersection', function() {
+			it('returns true', function() {
+				let simplifier = new RingSimplifier([
+					[ 0, 0 ],
+					[ 0, 7 ],
+					[ 3, 6 ],
+					[ 4, 8 ],
+					[ 5, 6 ],
+					[ 8, 6 ],
+					[ 8, 0 ],
+					[ 4, 7 ]
+				]);
+
+				expect(simplifier.willIntersect()).to.be.true;
+			});
+		});
+	});
+
+	describe('#rewind()', function() {
+		it('reverts the ring to just before self-intersection, clearing history', function() {
+			let simplifier = new RingSimplifier([
+				[ 0, 0 ],
+				[ 0, 7 ],
+				[ 3, 6 ],
+				[ 4, 8 ],
+				[ 5, 6 ],
+				[ 7, 7 ],
+				[ 8, 6 ],
+				[ 8, 0 ],
+				[ 6, 2 ],
+				[ 4, 7 ],
+				[ 2, 1 ]
+			]);
+			while (simplifier.vertexCount > 5) {
+				simplifier.simplify();
+			}
+
+			simplifier.rewind();
+
+			expect(simplifier.toArray()).to.deep.equal([
+				[ 0, 0 ],
+				[ 0, 7 ],
+				[ 3, 6 ],
+				[ 4, 8 ],
+				[ 5, 6 ],
+				[ 8, 6 ],
+				[ 8, 0 ],
+				[ 6, 2 ],
+				[ 4, 7 ],
+				[ 2, 1 ]
+			]);
+			expect(simplifier.removedVertices).to.deep.equal([]);
+		});
+
+		it('throws if first self-intersection cannot be found', function() {
+			let simplifier = new RingSimplifier([
+				[ 0, 0 ],
+				[ 0, 7 ],
+				[ 3, 6 ],
+				[ 4, 8 ],
+				[ 5, 6 ],
+				[ 7, 7 ],
+				[ 8, 6 ],
+				[ 8, 0 ],
+				[ 6, 2 ],
+				[ 4, 5 ],
+				[ 2, 1 ]
+			]);
+			while (simplifier.vertexCount > 5) {
+				simplifier.simplify();
+			}
+
+			expect(() => {
+				simplifier.rewind();
+			}).to.throw;
 		});
 	});
 });
