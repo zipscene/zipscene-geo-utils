@@ -362,6 +362,31 @@ describe('PolygonSimplifier', function() {
 				innerRing.toGeoJson.firstCall.returnValue
 			]);
 		});
+
+		it('filters out inner rings with fewer than three vertices', function() {
+			let simplifier = new PolygonSimplifier([
+				[
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 4, 4 ],
+					[ 4, 0 ]
+				],
+				[
+					[ 1, 1 ],
+					[ 3, 3 ]
+				]
+			]);
+			let outerRing = simplifier.rings[0];
+			sandbox.spy(outerRing, 'toGeoJson');
+
+			let result = simplifier.toGeoJson();
+
+			expect(outerRing.toGeoJson).to.be.calledOnce;
+			expect(outerRing.toGeoJson).to.be.calledOn(outerRing);
+			expect(result).to.deep.equal([
+				outerRing.toGeoJson.firstCall.returnValue
+			]);
+		});
 	});
 
 	describe('#toLineSegments()', function() {

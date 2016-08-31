@@ -44,5 +44,17 @@ describe('Vertex', function() {
 
 			expect(vertex.getArea()).to.equal(0.5);
 		});
+
+		it('returns zero when prev and next are the same', function() {
+			vertex.next = vertex.prev;
+
+			expect(vertex.getArea()).to.equal(0);
+		});
+
+		it('returns zero when vertex is its own prev and next', function() {
+			vertex.next = vertex.prev = vertex;
+
+			expect(vertex.getArea()).to.equal(0);
+		});
 	});
 });
