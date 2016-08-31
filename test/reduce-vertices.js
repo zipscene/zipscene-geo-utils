@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const reduceVertices = require('../lib/reduce-vertices');
 
-describe.skip('Reduce Vertices', function() {
+describe('Reduce Vertices', function() {
 	it('should reduce polygon to MAX vertices given an error tolerance of 0%', function() {
 		let polygon = {
 			type: 'Polygon',
