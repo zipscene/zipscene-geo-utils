@@ -4,18 +4,7 @@ const XError = require('xerror');
 
 describe('LinearRing', function() {
 	describe('constructor', function() {
-		it('calculates and stores original area', function() {
-			let ring = new LinearRing([
-				[ 0, 0 ],
-				[ 0, 4 ],
-				[ 4, 4 ],
-				[ 4, 0 ]
-			]);
-
-			expect(ring.originalArea).to.equal(16);
-		});
-
-		it('sets initial vertex count and area changed', function() {
+		it('sets initial vertex count', function() {
 			let ring = new LinearRing([
 				[ 0, 0 ],
 				[ 0, 4 ],
@@ -24,7 +13,6 @@ describe('LinearRing', function() {
 			]);
 
 			expect(ring.vertexCount).to.equal(4);
-			expect(ring.areaChanged).to.equal(0);
 		});
 
 		it('maps points to vertices', function() {
@@ -34,7 +22,8 @@ describe('LinearRing', function() {
 				[ 4, 4 ],
 				[ 4, 0 ]
 			];
-			let ring = new LinearRing(points);
+			let ringIndex = 0;
+			let ring = new LinearRing(points, ringIndex);
 
 			expect(ring.vertices).to.be.an.instanceof(Array);
 			expect(ring.vertices).to.have.length(points.length);
@@ -42,6 +31,7 @@ describe('LinearRing', function() {
 				expect(vertex).to.be.an.instanceof(Vertex);
 				expect(vertex.point).to.equal(points[index]);
 				expect(vertex.index).to.equal(index);
+				expect(vertex.ring).to.equal(ring);
 			});
 		});
 
@@ -76,21 +66,6 @@ describe('LinearRing', function() {
 			]);
 
 			expect(ring.vertices).to.have.length(4);
-		});
-	});
-
-	describe('#relativeAreaChanged', function() {
-		it('returns areaChanged divided by originalArea', function() {
-			let ring = new LinearRing([
-				[ 0, 0 ],
-				[ 0, 4 ],
-				[ 4, 4 ],
-				[ 4, 0 ]
-			]);
-			ring.removeVertex(ring.vertices[0]);
-
-			expect(ring.relativeAreaChanged)
-				.to.equal(ring.areaChanged / ring.originalArea);
 		});
 	});
 
@@ -153,12 +128,6 @@ describe('LinearRing', function() {
 			ring.removeVertex(vertex);
 
 			expect(ring.vertexCount).to.equal(3);
-		});
-
-		it('updates areaChanged', function() {
-			ring.removeVertex(vertex);
-
-			expect(ring.areaChanged).to.equal(8);
 		});
 	});
 
@@ -236,12 +205,6 @@ describe('LinearRing', function() {
 
 				expect(ring.vertexCount).to.equal(4);
 			});
-
-			it('reverts areaChanged', function() {
-				ring.restoreVertex(vertex);
-
-				expect(ring.areaChanged).to.equal(4);
-			});
 		});
 
 		context('incorrect restoration order', function() {
@@ -314,34 +277,6 @@ describe('LinearRing', function() {
 				[ [ 4, 4 ], [ 4, 0 ] ],
 				[ [ 4, 0 ], [ 0, 4 ] ]
 			]);
-		});
-	});
-
-	describe('#hasIntersections()', function() {
-		context('ring has no intersections with itself', function() {
-			it('returns false', function() {
-				let ring = new LinearRing([
-					[ 0, 0 ],
-					[ 0, 4 ],
-					[ 4, 4 ],
-					[ 4, 0 ]
-				]);
-
-				expect(ring.hasIntersections()).to.be.false;
-			});
-		});
-
-		context('ring has an intersection with itself', function() {
-			it('returns true', function() {
-				let ring = new LinearRing([
-					[ 0, 0 ],
-					[ 0, 4 ],
-					[ 4, 0 ],
-					[ 4, 4 ]
-				]);
-
-				expect(ring.hasIntersections()).to.be.true;
-			});
 		});
 	});
 });

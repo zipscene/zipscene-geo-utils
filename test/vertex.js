@@ -1,16 +1,17 @@
-const { expect } = require('chai');
-const { Vertex } = require('../lib');
+const { Vertex, LinearRing } = require('../lib');
 
 describe('Vertex', function() {
 	describe('constructor', function() {
 		it('initializes vertex', function() {
 			let point = [ 0, 1 ];
 			let index = 0;
+			let ring = new LinearRing([]);
 
-			let vertex = new Vertex(point, index);
+			let vertex = new Vertex(point, index, ring);
 
 			expect(vertex.point).to.equal(point);
 			expect(vertex.index).to.equal(index);
+			expect(vertex.ring).to.equal(ring);
 			expect(vertex.prev).to.be.null;
 			expect(vertex.next).to.be.null;
 			expect(vertex.skipped).to.be.false;

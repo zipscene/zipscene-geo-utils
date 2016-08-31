@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { simplifyPolygon } = require('../lib');
 
-describe('Simplify Polygons', function() {
+describe.skip('Simplify Polygons', function() {
 	it('should reduce polygon object\'s total vertices', function() {
 		let polygon = {
 			type: 'Polygon',
