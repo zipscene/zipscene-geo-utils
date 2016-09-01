@@ -21,8 +21,8 @@
     "combinations-generator": "^1.0.1",
     "geojson-area": "^0.2.1",
     "heap": "^0.2.6",
-    "line-segments-intersect": "0.0.0",
     "lodash": "^4.13.1",
+    "robust-segment-intersect": "^1.0.1",
     "xerror": "^1.1.1",
     "zs-objtools": "^1.6.2"
   },
