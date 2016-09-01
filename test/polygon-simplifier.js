@@ -127,16 +127,16 @@ describe('PolygonSimplifier', function() {
 		it('returns area divided by original area', function() {
 			let simplifier = new PolygonSimplifier([
 				[
-					[ 0, 0 ],  // Area: 8
-					[ 0, 4 ],  // Area: 20
-					[ 10, 6 ], // Area: 24
-					[ 4, 0 ]   // Area: 12
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 10, 6 ],
+					[ 4, 0 ]
 				],
 				[
-					[ 1, 1 ], // Area: 4.5
-					[ 1, 4 ], // Area: 9
-					[ 7, 5 ], // Area: 10.5
-					[ 4, 1 ]  // Area: 6
+					[ 1, 1 ],
+					[ 1, 4 ],
+					[ 7, 5 ],
+					[ 4, 1 ]
 				]
 			]);
 			simplifier.simplify();
@@ -152,16 +152,16 @@ describe('PolygonSimplifier', function() {
 		beforeEach(function() {
 			simplifier = new PolygonSimplifier([
 				[
-					[ 0, 0 ],  // Area: 8
-					[ 0, 4 ],  // Area: 20
-					[ 10, 6 ], // Area: 24
-					[ 4, 0 ]   // Area: 12
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 10, 6 ],
+					[ 4, 0 ]
 				],
 				[
-					[ 1, 1 ], // Area: 4.5
-					[ 1, 4 ], // Area: 9
-					[ 7, 5 ], // Area: 10.5
-					[ 4, 1 ]  // Area: 6
+					[ 1, 1 ],
+					[ 1, 4 ],
+					[ 7, 5 ],
+					[ 4, 1 ]
 				]
 			]);
 
@@ -207,22 +207,168 @@ describe('PolygonSimplifier', function() {
 		});
 	});
 
+	describe('#simplifyTo()', function() {
+		let simplifier;
+
+		beforeEach(function() {
+			simplifier = new PolygonSimplifier([
+				[
+					[ 0, 0 ], // Removed fourth, resulting in ~0.54 area change.
+					[ 0, 3 ],
+					[ 3, 4 ], // Removed second, resulting in ~0.13 area change.
+					[ 6, 4 ],
+					[ 5, 3 ], // Removed first, resulting in ~0.05 area change.
+					[ 6, 2 ], // Removed third, resulting in ~0.23 area change.
+					[ 4, 0 ]
+				]
+			]);
+		});
+
+		it('simplifies to maxVertices', function() {
+			simplifier.simplifyTo({ maxVertices: 4 });
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 0 ],
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]
+			]);
+		});
+
+		it('simplifies to minVertices', function() {
+			simplifier.simplifyTo({ minVertices: 3 });
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 4, 0 ],
+					[ 0, 3 ]
+				]
+			]);
+		});
+
+		it('simplifies to just before exceeding maxError', function() {
+			simplifier.simplifyTo({ maxError: 0.2 });
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 0 ],
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 6, 2 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]
+			]);
+		});
+
+		it('simplifies to exact maxError', function() {
+			simplifier.simplifyTo({ maxError: 0.23076923076923078 });
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 0 ],
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]
+			]);
+		});
+
+		it('simplifies to maxVertices, even beyond other options', function() {
+			simplifier.simplifyTo({
+				maxVertices: 3,
+				minVertices: 5,
+				maxError: 0.2
+			});
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 4, 0 ],
+					[ 0, 3 ]
+				]
+			]);
+		});
+
+		it('simplifies to minVertices, if reached before maxError', function() {
+			simplifier.simplifyTo({
+				maxVertices: 6,
+				minVertices: 5,
+				maxError: 0.5
+			});
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 0 ],
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 6, 2 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]
+			]);
+		});
+
+		it('simplifies to maxError, if reached before minVertices', function() {
+			simplifier.simplifyTo({
+				maxVertices: 6,
+				minVertices: 3,
+				maxError: 0.2
+			});
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 0 ],
+					[ 0, 3 ],
+					[ 6, 4 ],
+					[ 6, 2 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]
+			]);
+		});
+
+		it('does nothing if options are empty', function() {
+			simplifier.simplifyTo({});
+
+			expect(simplifier.toGeoJson()).to.deep.equal([
+				[
+					[ 0, 0 ],
+					[ 0, 3 ],
+					[ 3, 4 ],
+					[ 6, 4 ],
+					[ 5, 3 ],
+					[ 6, 2 ],
+					[ 4, 0 ],
+					[ 0, 0 ]
+				]
+			]);
+		});
+	});
+
 	describe('#undo()', function() {
 		let simplifier, heap, history, vertex;
 
 		beforeEach(function() {
 			simplifier = new PolygonSimplifier([
 				[
-					[ 0, 0 ],  // Area: 8
-					[ 0, 4 ],  // Area: 20
-					[ 10, 6 ], // Area: 24
-					[ 4, 0 ]   // Area: 12
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 10, 6 ],
+					[ 4, 0 ]
 				],
 				[
-					[ 1, 1 ], // Area: 4.5
-					[ 1, 4 ], // Area: 9
-					[ 7, 5 ], // Area: 10.5
-					[ 4, 1 ]  // Area: 6
+					[ 1, 1 ],
+					[ 1, 4 ],
+					[ 7, 5 ],
+					[ 4, 1 ]
 				]
 			]);
 			simplifier.simplify();
@@ -273,16 +419,16 @@ describe('PolygonSimplifier', function() {
 		beforeEach(function() {
 			simplifier = new PolygonSimplifier([
 				[
-					[ 0, 0 ],  // Area: 8
-					[ 0, 4 ],  // Area: 20
-					[ 10, 6 ], // Area: 24
-					[ 4, 0 ]   // Area: 12
+					[ 0, 0 ],
+					[ 0, 4 ],
+					[ 10, 6 ],
+					[ 4, 0 ]
 				],
 				[
-					[ 1, 1 ], // Area: 4.5
-					[ 1, 4 ], // Area: 9
-					[ 7, 5 ], // Area: 10.5
-					[ 4, 1 ]  // Area: 6
+					[ 1, 1 ],
+					[ 1, 4 ],
+					[ 7, 5 ],
+					[ 4, 1 ]
 				]
 			]);
 
@@ -520,16 +666,16 @@ describe('PolygonSimplifier', function() {
 			it('returns false', function() {
 				let simplifier = new PolygonSimplifier([
 					[
-						[ 0, 0 ],  // Area: 8
-						[ 0, 4 ],  // Area: 20
-						[ 10, 6 ], // Area: 24
-						[ 4, 0 ]   // Area: 12
+						[ 0, 0 ],
+						[ 0, 4 ],
+						[ 10, 6 ],
+						[ 4, 0 ]
 					],
 					[
-						[ 1, 1 ], // Area: 4.5
-						[ 1, 4 ], // Area: 9
-						[ 7, 5 ], // Area: 10.5
-						[ 4, 1 ]  // Area: 6
+						[ 1, 1 ], // Will be removed, causing no intersection.
+						[ 1, 4 ],
+						[ 7, 5 ],
+						[ 4, 1 ]
 					]
 				]);
 
@@ -541,16 +687,15 @@ describe('PolygonSimplifier', function() {
 			it('returns true', function() {
 				let simplifier = new PolygonSimplifier([
 					[
-						[ 0, 0 ], // Area: 14
-						[ 0, 7 ], // Area: 10.5
-						[ 3, 6 ], // Area: 3.5
-						[ 4, 8 ], // Area: 2
-						// intersection will occur here...
-						[ 5, 6 ], // Area: 3
-						[ 8, 6 ], // Area: 9
-						[ 8, 0 ], // Area: 12
+						[ 0, 0 ],
+						[ 0, 7 ],
+						[ 3, 6 ],
+						[ 4, 8 ], // will be removed, causing intersection here...
+						[ 5, 6 ],
+						[ 8, 6 ],
+						[ 8, 0 ],
 						// here...
-						[ 4, 7 ]  // Area: 28
+						[ 4, 7 ]
 						// and here.
 					]
 				]);
@@ -563,22 +708,21 @@ describe('PolygonSimplifier', function() {
 			it('returns true', function() {
 				let simplifier = new PolygonSimplifier([
 					[
-						[ 0, 0 ],   // Area: 50
-						[ 0, 10 ],  // Area: 50
-						[ 10, 10 ], // Area: 50
-						[ 10, 0 ]   // Area: 50
+						[ 0, 0 ],
+						[ 0, 10 ],
+						[ 10, 10 ],
+						[ 10, 0 ]
 					],
 					[
-						[ 1, 1 ], // Area: 14
-						[ 1, 8 ], // Area: 10.5
-						[ 4, 7 ], // Area: 3.5
-						[ 5, 9 ], // Area: 2
-						// intersection will occur here...
-						[ 6, 7 ], // Area: 3
-						[ 9, 7 ], // Area: 9
-						[ 9, 1 ], // Area: 12
+						[ 1, 1 ],
+						[ 1, 8 ],
+						[ 4, 7 ],
+						[ 5, 9 ], // will be removed, causing intersection here...
+						[ 6, 7 ],
+						[ 9, 7 ],
+						[ 9, 1 ],
 						// here...
-						[ 5, 8 ]  // Area: 28
+						[ 5, 8 ]
 						// and here.
 					]
 				]);
@@ -591,19 +735,18 @@ describe('PolygonSimplifier', function() {
 			it('returns true', function() {
 				let simplifier = new PolygonSimplifier([
 					[
-						[ 0, 0 ], // Area: 10
-						[ 0, 5 ], // Area: 5
-						[ 2, 7 ], // Area: 4
-						// intersection will occur here...
-						[ 4, 5 ], // Area: 5
-						[ 4, 0 ]  // Area: 10
+						[ 0, 0 ],
+						[ 0, 5 ],
+						[ 2, 7 ], // will be removed, causing intersection here...
+						[ 4, 5 ],
+						[ 4, 0 ]
 					],
 					[
-						[ 1, 1 ], // Area: 5
+						[ 1, 1 ],
 						// here...
-						[ 2, 6 ], // Area: 5
+						[ 2, 6 ],
 						// and here.
-						[ 3, 1 ]  // Area: 5
+						[ 3, 1 ]
 					]
 				]);
 
