@@ -1,4 +1,3 @@
-const { expect } = require('chai');
 const { simplifyPolygon } = require('../lib');
 
 describe('Simplify Polygons', function() {
@@ -139,5 +138,36 @@ describe('Simplify Polygons', function() {
 			[ -90.191964, 43.554996 ],
 			[ -90.311069, 43.553991 ],
 			[ -90.312404, 43.640988 ] ] ]);
+	});
+
+	it('should skip vertices to avoid self-crossing polygons', function() {
+		let testPoly = {
+			type: 'Polygon',
+			coordinates: [ [
+				[ 0, 0 ],
+				[ 0, 7 ],
+				[ 3, 6 ],
+				[ 4, 8 ],
+				[ 5, 6 ],
+				[ 8, 6 ],
+				[ 8, 0 ],
+				[ 4, 7 ]
+			] ]
+		};
+
+		let newPoly = simplifyPolygon(testPoly, {
+			minVertices: 3,
+			maxVertices: 6
+		});
+
+		expect(newPoly.coordinates).to.deep.equal([ [
+			[ 0, 0 ],
+			[ 0, 7 ],
+			[ 4, 8 ],
+			[ 8, 6 ],
+			[ 8, 0 ],
+			[ 4, 7 ],
+			[ 0, 0 ]
+		] ]);
 	});
 });
