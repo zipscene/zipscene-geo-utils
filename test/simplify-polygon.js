@@ -140,7 +140,7 @@ describe('Simplify Polygons', function() {
 			[ -90.312404, 43.640988 ] ] ]);
 	});
 
-	it('should skip vertices to avoid self-crossing polygons', function() {
+	it('should support option to fix intersections', function() {
 		let testPoly = {
 			type: 'Polygon',
 			coordinates: [ [
@@ -157,7 +157,8 @@ describe('Simplify Polygons', function() {
 
 		let newPoly = simplifyPolygon(testPoly, {
 			minVertices: 3,
-			maxVertices: 6
+			maxVertices: 6,
+			fixIntersections: true
 		});
 
 		expect(newPoly.coordinates).to.deep.equal([ [
