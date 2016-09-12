@@ -1,6 +1,6 @@
 {
   "name": "zs-geo-utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Geo Utils",
   "main": "./dist/lib/index.js",
   "repository": {
