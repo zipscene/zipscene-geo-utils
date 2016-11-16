@@ -1,4 +1,4 @@
-# zs-geo-utils
+# zipscene-geo-utils
 
 GeoJson utility library. Includes several classes for working with GeoJson
 entities, as well as a static simplification function.
@@ -10,7 +10,7 @@ specified tolerances are reached. It is capable of removing internal rings and
 individual MultiPolygon parts as part of the simplification process.
 
 ```javascript
-const { simplifyPolygon } = require('zs-geo-utils');
+const { simplifyPolygon } = require('zipscene-geo-utils');
 
 let geoJson = {
 	type: 'Polygon', // Can also be a MultiPolygon
@@ -44,7 +44,7 @@ A class for performing simplification operations on GeoJson geometries. It is
 used internally by `simplifyPolygon` above.
 
 ```javascript
-const { GeoSimplifier, LinearRing } = require('zs-geo-utils');
+const { GeoSimplifier, LinearRing } = require('zipscene-geo-utils');
 
 // See more about the LinearRing class below.
 let ring = new LinearRing([
@@ -115,7 +115,7 @@ The simplest GeoJson entity class. Represents a point in a GeoJson coordinate
 ring, with references to its neighboring points.
 
 ```javascript
-const { Vertex } = require('zs-geo-utils');
+const { Vertex } = require('zipscene-geo-utils');
 
 let vertex = new Vertex([ 0, 0 ]);
 vertex.prev = new Vertex([ 1, 0 ]);
@@ -136,7 +136,7 @@ ring, not by their current positions, which might change based on removal and
 restoration.
 
 ```javascript
-const { LinearRing } = require('zs-geo-utils');
+const { LinearRing } = require('zipscene-geo-utils');
 
 let ring = new LinearRing([
 	[ 0, 0 ],
@@ -174,7 +174,7 @@ rings, the first being the outer ring of the polygon, and the other being inner
 holes.
 
 ```javascript
-const { Polygon } = reqiure('zs-geo-utils');
+const { Polygon } = reqiure('zipscene-geo-utils');
 
 let polygon = new Polygon([
 	[
@@ -220,7 +220,7 @@ disconnected polygons, each with a series of rings as described under
 `LinearRing` above.
 
 ```javascript
-const { MultiPolygon } = require('zs-geo-utils');
+const { MultiPolygon } = require('zipscene-geo-utils');
 
 let multiPolygon = new MultiPolygon([
 	[

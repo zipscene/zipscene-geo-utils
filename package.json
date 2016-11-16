@@ -1,12 +1,15 @@
 {
-  "name": "zs-geo-utils",
+  "name": "zipscene-geo-utils",
   "version": "0.0.3",
   "description": "Geo Utils",
   "main": "./dist/lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git@git.zipscene.com:zsapilibs/zs-geo-utils.git"
+    "url": "https://github.com/zipscene/zipscene-geo-utils.git"
   },
+  "keywords": [
+    "geo"
+  ],
   "scripts": {
     "lint": "node ./node_modules/.bin/eslint . || exit 0",
     "docs": "node ./node_modules/.bin/yuidoc .",
@@ -24,7 +27,7 @@
     "lodash": "^4.13.1",
     "robust-segment-intersect": "^1.0.1",
     "xerror": "^1.1.1",
-    "zs-objtools": "^1.6.2"
+    "objtools": "^1.6.2"
   },
   "devDependencies": {
     "broccoli": "^0.16.9",
@@ -42,7 +45,5 @@
     "source-map-support": "^0.4.0",
     "yuidocjs": "^0.10.1"
   },
-  "publishConfig": {
-    "registry": "https://npm.zipscene.com/"
-  }
+  "license": "Apache-2.0"
 }

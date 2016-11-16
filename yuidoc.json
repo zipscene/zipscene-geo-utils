@@ -1,5 +1,5 @@
 {
-	"name": "zs-geo-utils",
+	"name": "zipscene-geo-utils",
 	"description": "Geo Utils",
 	"options": {
 		"outdir": "./docs",
