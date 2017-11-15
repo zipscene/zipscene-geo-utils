@@ -1,6 +1,6 @@
 {
   "name": "zipscene-geo-utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Geo Utils",
   "main": "./dist/lib/index.js",
   "repository": {
