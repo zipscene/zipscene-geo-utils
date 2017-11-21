@@ -24,10 +24,11 @@
     "combinations-generator": "^1.0.1",
     "geojson-area": "^0.2.1",
     "heap": "^0.2.6",
+    "jsts": "^1.4.0",
     "lodash": "^4.13.1",
+    "objtools": "^1.6.2",
     "robust-segment-intersect": "^1.0.1",
-    "xerror": "^1.1.1",
-    "objtools": "^1.6.2"
+    "xerror": "^1.1.1"
   },
   "devDependencies": {
     "broccoli": "^0.16.9",

@@ -175,4 +175,5 @@ describe('Simplify Polygons', function() {
 			[ 0, 0 ]
 		] ]);
 	});
+
 });
