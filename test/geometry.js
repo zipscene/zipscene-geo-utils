@@ -21,7 +21,7 @@ describe('Geometry', function() {
 		it('throws unsupported operation XError', function() {
 			expect(() => {
 				geometry.listVertices();
-			}).to.throw(XError, XError.UNSUPPORTED_OPERATION);
+			}).to.throw(XError);
 		});
 	});
 
@@ -29,7 +29,7 @@ describe('Geometry', function() {
 		it('throws unsupported operation XError', function() {
 			expect(() => {
 				geometry.calculateArea();
-			}).to.throw(XError, XError.UNSUPPORTED_OPERATION);
+			}).to.throw(XError);
 		});
 	});
 
@@ -37,7 +37,7 @@ describe('Geometry', function() {
 		it('throws unsupported operation XError', function() {
 			expect(() => {
 				geometry.toGeoJson();
-			}).to.throw(XError, XError.UNSUPPORTED_OPERATION);
+			}).to.throw(XError);
 		});
 	});
 
@@ -45,7 +45,7 @@ describe('Geometry', function() {
 		it('throws unsupported operation XError', function() {
 			expect(() => {
 				geometry.toLineSegments();
-			}).to.throw(XError, XError.UNSUPPORTED_OPERATION);
+			}).to.throw(XError);
 		});
 	});
 });

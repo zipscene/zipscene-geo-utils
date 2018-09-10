@@ -115,7 +115,7 @@ describe('Vertex', function() {
 
 			expect(() =>{
 				vertex.getArea();
-			}).to.throw(XError, `${XError.INVALID_ARGUMENT}: prev not set.`);
+			}).to.throw(XError);
 		});
 
 		it('throws invalid argument when next is not set', function() {
@@ -123,7 +123,7 @@ describe('Vertex', function() {
 
 			expect(() =>{
 				vertex.getArea();
-			}).to.throw(XError, `${XError.INVALID_ARGUMENT}: next not set.`);
+			}).to.throw(XError);
 		});
 	});
 

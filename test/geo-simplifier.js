@@ -141,7 +141,7 @@ describe('GeoSimplifier', function() {
 
 			expect(() => {
 				simplifier.simplify();
-			}).to.throw(XError, `${XError.INVALID_ARGUMENT}: No remaining vertices.`);
+			}).to.throw(XError);
 		});
 	});
 
@@ -190,7 +190,7 @@ describe('GeoSimplifier', function() {
 		it('throws when history is empty', function() {
 			expect(() => {
 				simplifier.undo();
-			}).to.throw(XError, `${XError.INVALID_ARGUMENT}: Simplification history is empty.`);
+			}).to.throw(XError);
 		});
 	});
 
@@ -222,7 +222,7 @@ describe('GeoSimplifier', function() {
 
 			expect(() => {
 				simplifier.skip();
-			}).to.throw(XError, `${XError.INVALID_ARGUMENT}: No remaining vertices.`);
+			}).to.throw(XError);
 		});
 	});
 

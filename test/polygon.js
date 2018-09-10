@@ -136,7 +136,7 @@ describe('Polygon', function() {
 		});
 
 		it('filters out empty rings', function() {
-			sinon.stub(innerRing, 'toGeoJson', () => []);
+			sinon.stub(innerRing, 'toGeoJson').callsFake(() => []);
 
 			expect(polygon.toGeoJson()).to.deep.equal([
 				outerRing.toGeoJson.firstCall.returnValue

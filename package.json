@@ -1,8 +1,8 @@
 {
   "name": "zipscene-geo-utils",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "Geo Utils",
-  "main": "./dist/lib/index.js",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/zipscene/zipscene-geo-utils.git"
@@ -13,38 +13,31 @@
   "scripts": {
     "lint": "node ./node_modules/.bin/eslint . || exit 0",
     "docs": "node ./node_modules/.bin/yuidoc .",
-    "test": "npm run-script build && node ./node_modules/.bin/mocha ./dist/test -R spec",
-    "build": "rm -rf dist && broccoli build dist; chmod -f u+x dist/bin/*; rm -rf tmp",
-    "prepublish": "npm run-script build && npm run-script docs"
+    "test": "node ./node_modules/.bin/mocha ./test -R spec",
+    "prepublishOnly": "npm run-script docs"
   },
   "dependencies": {
     "area-polygon": "^1.0.1",
-    "babel-runtime": "6.9.2",
     "binary-search-tree": "^0.2.6",
     "combinations-generator": "^1.0.1",
     "geojson-area": "^0.2.1",
     "heap": "^0.2.6",
-    "jsts": "^1.4.0",
-    "lodash": "^4.13.1",
-    "objtools": "^1.6.2",
+    "jsts": "^2.0.0",
+    "lodash": "^4.17.10",
+    "objtools": "^2.0.1",
     "robust-segment-intersect": "^1.0.1",
-    "xerror": "^1.1.1"
+    "xerror": "^1.1.2"
   },
   "devDependencies": {
-    "broccoli": "^0.16.9",
-    "broccoli-babel-transpiler": "^5.5.0",
-    "broccoli-cli": "^1.0.0",
-    "broccoli-funnel": "^1.0.1",
-    "broccoli-merge-trees": "^1.1.1",
-    "broccoli-static-compiler": "^0.2.2",
-    "broccoli-wrap": "0.0.2",
-    "chai": "^3.5.0",
-    "eslint": "^2.13.0",
-    "mocha": "^2.5.3",
-    "sinon": "^1.17.5",
-    "sinon-chai": "^2.8.0",
-    "source-map-support": "^0.4.0",
-    "yuidocjs": "^0.10.1"
+    "chai": "^4.1.2",
+    "eslint": "^5.5.0",
+    "mocha": "^5.2.0",
+    "sinon": "^6.2.0",
+    "sinon-chai": "^3.2.0",
+    "yuidocjs": "^0.10.2"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">= 8.0.0"
+  }
 }

@@ -131,7 +131,7 @@ describe('LinearRing', function() {
 			it('throws XError with appropriate message', function() {
 				expect(() => {
 					ring.restoreVertex(removedVertices[0]);
-				}).to.throw(XError, `${XError.INVALID_ARGUMENT}: Incorrect restoration order.`);
+				}).to.throw(XError);
 			});
 		});
 	});

@@ -147,7 +147,7 @@ describe('MultiPolygon', function() {
 		});
 
 		it('filters out empty polygons', function() {
-			sinon.stub(secondPoly, 'toGeoJson', () => []);
+			sinon.stub(secondPoly, 'toGeoJson').callsFake(() => []);
 
 			expect(multiPolygon.toGeoJson()).to.deep.equal([
 				firstPoly.toGeoJson.firstCall.returnValue
